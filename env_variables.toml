@@ -5,6 +5,6 @@ database_host = "localhost"
 database_port = 5432
 database_user = "postgres"
 database_password = "postgres"
-database_name = "tennisDB"
+database_name = "tennisdb"
 database_sslmode = "disable"
 seed_user_count = 100
