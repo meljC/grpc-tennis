@@ -4,7 +4,15 @@ package location;
 option go_package = "/location";
 
 //import "google/api/annotations.proto";
-//import "models.proto";
+//import "proto";
+
+message Location{
+    uint32 id = 1;
+    uint32 city_id = 2;
+	float latitude = 3;
+	float longitude = 4;
+	string  address = 5;
+}
 
 message CreateLocationRequest{
 	uint32 city_id = 1;
@@ -34,7 +42,11 @@ message DeleteLocationRequest{
 }
 
 message GetLocationsResponse{
-//    Location model
+    repeated Location locations = 1;
+}
+
+message GetLocationResponse{
+    Location location = 1;
 }
 
 message Response{
@@ -48,11 +60,11 @@ service LocationService{
         };
     */
 
-    rpc GetLocations(GetLocationsRequest) returns (Response) {
+    rpc GetLocations(GetLocationsRequest) returns (GetLocationsResponse) {
         // option
     }
 
-    rpc Get (GetLocationRequest) returns (Response) {
+    rpc Get (GetLocationRequest) returns (GetLocationResponse) {
         // option
     }
 

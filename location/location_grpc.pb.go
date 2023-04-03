@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.2.0
 // - protoc             v3.21.12
-// source: location.proto
+// source: proto/location.proto
 
 package location
 
@@ -23,8 +23,8 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type LocationServiceClient interface {
 	Create(ctx context.Context, in *CreateLocationRequest, opts ...grpc.CallOption) (*Response, error)
-	GetLocations(ctx context.Context, in *GetLocationsRequest, opts ...grpc.CallOption) (*Response, error)
-	Get(ctx context.Context, in *GetLocationRequest, opts ...grpc.CallOption) (*Response, error)
+	GetLocations(ctx context.Context, in *GetLocationsRequest, opts ...grpc.CallOption) (*GetLocationsResponse, error)
+	Get(ctx context.Context, in *GetLocationRequest, opts ...grpc.CallOption) (*GetLocationResponse, error)
 	Update(ctx context.Context, in *UpdateLocationRequest, opts ...grpc.CallOption) (*Response, error)
 	Delete(ctx context.Context, in *DeleteLocationRequest, opts ...grpc.CallOption) (*Response, error)
 }
@@ -46,8 +46,8 @@ func (c *locationServiceClient) Create(ctx context.Context, in *CreateLocationRe
 	return out, nil
 }
 
-func (c *locationServiceClient) GetLocations(ctx context.Context, in *GetLocationsRequest, opts ...grpc.CallOption) (*Response, error) {
-	out := new(Response)
+func (c *locationServiceClient) GetLocations(ctx context.Context, in *GetLocationsRequest, opts ...grpc.CallOption) (*GetLocationsResponse, error) {
+	out := new(GetLocationsResponse)
 	err := c.cc.Invoke(ctx, "/location.LocationService/GetLocations", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -55,8 +55,8 @@ func (c *locationServiceClient) GetLocations(ctx context.Context, in *GetLocatio
 	return out, nil
 }
 
-func (c *locationServiceClient) Get(ctx context.Context, in *GetLocationRequest, opts ...grpc.CallOption) (*Response, error) {
-	out := new(Response)
+func (c *locationServiceClient) Get(ctx context.Context, in *GetLocationRequest, opts ...grpc.CallOption) (*GetLocationResponse, error) {
+	out := new(GetLocationResponse)
 	err := c.cc.Invoke(ctx, "/location.LocationService/Get", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -87,8 +87,8 @@ func (c *locationServiceClient) Delete(ctx context.Context, in *DeleteLocationRe
 // for forward compatibility
 type LocationServiceServer interface {
 	Create(context.Context, *CreateLocationRequest) (*Response, error)
-	GetLocations(context.Context, *GetLocationsRequest) (*Response, error)
-	Get(context.Context, *GetLocationRequest) (*Response, error)
+	GetLocations(context.Context, *GetLocationsRequest) (*GetLocationsResponse, error)
+	Get(context.Context, *GetLocationRequest) (*GetLocationResponse, error)
 	Update(context.Context, *UpdateLocationRequest) (*Response, error)
 	Delete(context.Context, *DeleteLocationRequest) (*Response, error)
 	mustEmbedUnimplementedLocationServiceServer()
@@ -101,10 +101,10 @@ type UnimplementedLocationServiceServer struct {
 func (UnimplementedLocationServiceServer) Create(context.Context, *CreateLocationRequest) (*Response, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Create not implemented")
 }
-func (UnimplementedLocationServiceServer) GetLocations(context.Context, *GetLocationsRequest) (*Response, error) {
+func (UnimplementedLocationServiceServer) GetLocations(context.Context, *GetLocationsRequest) (*GetLocationsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetLocations not implemented")
 }
-func (UnimplementedLocationServiceServer) Get(context.Context, *GetLocationRequest) (*Response, error) {
+func (UnimplementedLocationServiceServer) Get(context.Context, *GetLocationRequest) (*GetLocationResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Get not implemented")
 }
 func (UnimplementedLocationServiceServer) Update(context.Context, *UpdateLocationRequest) (*Response, error) {
@@ -245,5 +245,5 @@ var LocationService_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "location.proto",
+	Metadata: "proto/location.proto",
 }
