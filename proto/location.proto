@@ -1,9 +1,9 @@
 syntax = "proto3";
 
 package location;
-option go_package = "/location";
+option  go_package = "/location";
 
-//import "google/api/annotations.proto";
+import "google/api/annotations.proto";
 //import "proto";
 
 message Location{
@@ -56,12 +56,14 @@ message Response{
 service LocationService{
     rpc Create(CreateLocationRequest) returns (Response) {}
     /*    option (google.api.http) = {
-            post = /api/Locations
+            post = /api/locations
         };
     */
 
     rpc GetLocations(GetLocationsRequest) returns (GetLocationsResponse) {
-        // option
+        option (google.api.http) = {
+            get : "/api/locations"
+        };
     }
 
     rpc Get (GetLocationRequest) returns (GetLocationResponse) {
