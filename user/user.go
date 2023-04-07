@@ -17,6 +17,7 @@ func (s *Server) Create(ctx context.Context, request *CreateUserRequest) (*Respo
 	var u models.User
 	u.FirstName = request.GetFirstName()
 	u.Email = request.GetEmail()
+	u.Password = request.GetPassword()
 	u.RoleID = uint(request.GetRoleId())
 	database.DB.Create(&u)
 

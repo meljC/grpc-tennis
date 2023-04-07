@@ -100,6 +100,7 @@ func main() {
 	requestUser := user.CreateUserRequest{
 		FirstName: "Zoki",
 		Email:     "plenki@zoki.hr",
+		Password:  "pass123",
 		RoleId:    1,
 	}
 

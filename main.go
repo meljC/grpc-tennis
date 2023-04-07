@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"grpc-tennis/auth"
 	"grpc-tennis/config"
 	"grpc-tennis/database"
 	"grpc-tennis/location"
@@ -29,6 +30,10 @@ func run() error {
 		log.Fatalf("Failed to register gateway: %v", err)
 	}
 
+	if err := auth.RegisterAuthServiceHandlerFromEndpoint(ctx, mux, endpoint, opts); err != nil {
+		log.Fatalf("Failed to register gateway: %v", err)
+	}
+
 	// Start HTTP server (and proxy calls to gRPC server endpoint)
 	return http.ListenAndServe(":8080", mux)
 }
@@ -49,11 +54,13 @@ func main() {
 
 	s := location.Server{}
 	s2 := user.Server{}
+	s3 := auth.Server{}
 
 	grpcServer := grpc.NewServer()
 
 	location.RegisterLocationServiceServer(grpcServer, &s)
 	user.RegisterUserServiceServer(grpcServer, &s2)
+	auth.RegisterAuthServiceServer(grpcServer, &s3)
 
 	go func() {
 		if err := grpcServer.Serve(lis); err != nil {
