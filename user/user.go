@@ -22,3 +22,14 @@ func (s *Server) Create(ctx context.Context, request *CreateUserRequest) (*Respo
 
 	return &Response{Message: "User added!"}, nil
 }
+
+func GetUserByEmail(email string) *models.User {
+	var u models.User
+	err := database.DB.Where("email = ?", email).First(&u).Error
+	if err != nil {
+		log.Fatal("user not found")
+	}
+
+	return &u
+
+}

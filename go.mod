@@ -4,6 +4,7 @@ go 1.19
 
 require (
 	github.com/brianvoe/gofakeit/v6 v6.20.2
+	github.com/golang-jwt/jwt v3.2.2+incompatible
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.15.2
 	github.com/spf13/viper v1.15.0
 	google.golang.org/genproto v0.0.0-20230306155012-7f2fa6fef1f4
