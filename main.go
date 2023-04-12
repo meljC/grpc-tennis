@@ -30,6 +30,10 @@ func run() error {
 		log.Fatalf("Failed to register gateway: %v", err)
 	}
 
+	if err := user.RegisterUserServiceHandlerFromEndpoint(ctx, mux, endpoint, opts); err != nil {
+		log.Fatalf("Failed to register gateway: %v", err)
+	}
+
 	if err := auth.RegisterAuthServiceHandlerFromEndpoint(ctx, mux, endpoint, opts); err != nil {
 		log.Fatalf("Failed to register gateway: %v", err)
 	}

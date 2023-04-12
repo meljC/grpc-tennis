@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/golang-jwt/jwt"
+	"golang.org/x/crypto/bcrypt"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
@@ -41,4 +42,9 @@ func (s *Server) Login(ctx context.Context, req *LoginRequest) (*LoginResponse, 
 	}
 
 	return &LoginResponse{Token: tokenString}, nil
+}
+
+func (s *Server) CheckPasswordHash(password, hash string) bool {
+	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
+	return err == nil
 }

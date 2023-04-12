@@ -3,14 +3,24 @@ syntax = "proto3";
 package user;
 option go_package = "/user";
 
-//import "google/api/annotations.proto";
+import "google/api/annotations.proto";
 //import "models.proto";
+
+message User {
+    uint32 id = 1;
+    string first_name = 2;
+    string last_name = 3;
+    string email = 4;
+    string password = 5;
+    uint32 role_id = 6;
+}
 
 message CreateUserRequest{
     string first_name = 1;
-    string email = 2;
-    string password = 3;
-    uint32 role_id = 4;
+    string last_name = 2;
+    string email = 3;
+    string password = 4;
+    uint32 role_id = 5;
 }
 
 message GetUsersRequest{
@@ -24,9 +34,10 @@ message GetUserRequest{
 message UpdateUserRequest{
     uint32 id = 1;
     string first_name = 2;
-    string email = 3;
-    string password = 4;
-    uint32 role_id = 5;
+    string last_name = 3;
+    string email = 4;
+    string password = 5;
+    uint32 role_id = 6;
 }
 
 message DeleteUserRequest{
@@ -34,7 +45,11 @@ message DeleteUserRequest{
 }
 
 message GetUsersResponse{
-//    user model
+    repeated User users = 1;
+}
+
+message GetUserResponse{
+    User user = 1;
 }
 
 message Response{
@@ -43,25 +58,33 @@ message Response{
 
 service UserService{
     rpc Create(CreateUserRequest) returns (Response) {
-    /*    option (google.api.http) = {
-            post = /api/users
+        option (google.api.http) = {
+            post : "/api/users"
         };
-    */
+    
     }
 
-    rpc GetUsers(GetUsersRequest) returns (Response) {
-        // option
+    rpc GetUsers(GetUsersRequest) returns (GetUsersResponse) {
+        option (google.api.http) = {
+            get : "/api/users"
+        };
     }
 
-    rpc Get (GetUserRequest) returns (Response) {
-        // option
+    rpc Get (GetUserRequest) returns (GetUserResponse) {
+        option (google.api.http) = {
+            get : "/api/users/{id}"
+        };
     }
-
+    
     rpc Update (UpdateUserRequest) returns (Response) {
-        // option
-    } 
-
+        option (google.api.http) = {
+            put : "/api/users/{id}"
+        };
+    }
+    
     rpc Delete (DeleteUserRequest) returns (Response) {
-        // option
+        option (google.api.http) = {
+            delete : "/api/users/{id}"
+        };
     }
 }

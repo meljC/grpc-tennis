@@ -54,11 +54,11 @@ message Response{
 }
 
 service LocationService{
-    rpc Create(CreateLocationRequest) returns (Response) {}
-    /*    option (google.api.http) = {
-            post = /api/locations
+    rpc Create(CreateLocationRequest) returns (Response) {
+        option (google.api.http) = {
+            post : "/api/locations"
         };
-    */
+    }
 
     rpc GetLocations(GetLocationsRequest) returns (GetLocationsResponse) {
         option (google.api.http) = {
@@ -67,14 +67,20 @@ service LocationService{
     }
 
     rpc Get (GetLocationRequest) returns (GetLocationResponse) {
-        // option
+        option (google.api.http) = {
+            get: "/api/locations/{id}"
+        };
     }
 
     rpc Update (UpdateLocationRequest) returns (Response) {
-        // option
+        option (google.api.http) = {
+            put: "/api/locations/{id}"
+        };
     } 
 
     rpc Delete (DeleteLocationRequest) returns (Response) {
-        // option
+        option (google.api.http) = {
+            delete: "/api/locations/{id}"
+        };
     }
 }
