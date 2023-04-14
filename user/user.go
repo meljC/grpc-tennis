@@ -17,12 +17,12 @@ type Server struct {
 func (s *Server) Create(ctx context.Context, request *CreateUserRequest) (*Response, error) {
 	log.Printf("Received reequst to add a user: %s %s", request.GetFirstName(), request.GetEmail())
 
-	var u models.User
+	var u User
 	u.FirstName = request.GetFirstName()
 	u.LastName = request.GetLastName()
 	u.Email = request.GetEmail()
 	u.Password = hashPassword(request.GetPassword())
-	u.RoleID = uint(request.GetRoleId())
+	u.RoleId = request.GetRoleId()
 
 	database.DB.Create(&u)
 

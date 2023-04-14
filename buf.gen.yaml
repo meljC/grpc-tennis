@@ -1,0 +1,18 @@
+version: v1
+plugins:
+  # Generate go files
+  - remote: buf.build/protocolbuffers/plugins/go:v1.27.1-1
+    out: gen
+    opt: paths=source_relative
+  # Generate go-grpc files
+  - remote: buf.build/grpc/plugins/go:v1.1.0-1
+    out: gen
+    opt: paths=source_relative
+  # Generate grpc gateway files
+  - remote: buf.build/grpc-ecosystem/plugins/grpc-gateway:v2.8.0-1
+    out: gen
+    opt:
+      - logtostderr=true
+      - generate_unbound_methods=true
+      - paths=source_relative
+  
