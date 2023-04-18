@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package auth;
 
-option go_package = "/auth";
+option go_package = "grpc-tennis/gen";
 
 import "google/api/annotations.proto";
 

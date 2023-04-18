@@ -1,7 +1,7 @@
 syntax = "proto3";
 
 package user;
-option go_package = "/user";
+option go_package = "grpc-tennis/gen";
 
 import "google/api/annotations.proto";
 //import "models.proto";

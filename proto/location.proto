@@ -1,7 +1,7 @@
 syntax = "proto3";
 
 package location;
-option  go_package = "/location";
+option  go_package = "grpc-tennis/gen";
 
 import "google/api/annotations.proto";
 //import "proto";
@@ -49,12 +49,9 @@ message GetLocationResponse{
     Location location = 1;
 }
 
-message Response{
-    string message = 1;
-}
 
 service LocationService{
-    rpc Create(CreateLocationRequest) returns (Response) {
+    rpc Create(CreateLocationRequest) returns (Location) {
         option (google.api.http) = {
             post : "/api/locations"
         };
@@ -72,13 +69,13 @@ service LocationService{
         };
     }
 
-    rpc Update (UpdateLocationRequest) returns (Response) {
+    rpc Update (UpdateLocationRequest) returns (Location) {
         option (google.api.http) = {
             put: "/api/locations/{id}"
         };
     } 
 
-    rpc Delete (DeleteLocationRequest) returns (Response) {
+    rpc Delete (DeleteLocationRequest) returns (Location) {
         option (google.api.http) = {
             delete: "/api/locations/{id}"
         };

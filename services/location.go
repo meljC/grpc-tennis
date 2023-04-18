@@ -1,20 +1,21 @@
-package location
+package services
 
 import (
 	context "context"
 	"fmt"
 	"grpc-tennis/database"
+	"grpc-tennis/gen"
 	"grpc-tennis/models"
 	"log"
 )
 
-type Server struct {
-	UnimplementedLocationServiceServer
+type LocationServer struct {
+	gen.UnimplementedLocationServiceServer
 }
 
-var locations = []*Location{}
+var locations = []*gen.Location{}
 
-func (s *Server) Create(ctx context.Context, request *CreateLocationRequest) (*Response, error) {
+func (s *LocationServer) Create(ctx context.Context, request *gen.CreateLocationRequest) (*gen.Location, error) {
 	log.Printf("Received reequst to add a Location: %d %s", request.GetCityId(), request.GetAddress())
 
 	var l models.Location
@@ -24,33 +25,33 @@ func (s *Server) Create(ctx context.Context, request *CreateLocationRequest) (*R
 	l.Address = request.GetAddress()
 	database.DB.Create(&l)
 
-	return &Response{Message: "Location added!"}, nil
+	return &gen.Location{}, nil
 }
 
-func (s *Server) GetLocations(ctx context.Context, request *GetLocationsRequest) (*GetLocationsResponse, error) {
+func (s *LocationServer) GetLocations(ctx context.Context, request *gen.GetLocationsRequest) (*gen.GetLocationsResponse, error) {
 	log.Printf("Received reequst to list all Locations: ")
 
 	database.DB.Find(&locations)
 
-	return &GetLocationsResponse{Locations: locations}, nil
+	return &gen.GetLocationsResponse{Locations: locations}, nil
 }
 
-func (s *Server) Get(ctx context.Context, request *GetLocationRequest) (*GetLocationResponse, error) {
+func (s *LocationServer) Get(ctx context.Context, request *gen.GetLocationRequest) (*gen.GetLocationResponse, error) {
 	log.Printf("Received reequst to GET a Location by ID: ")
 
-	var l *Location
+	var l *gen.Location
 	id := request.GetId()
 	fmt.Println("Get Location with ID: ", id)
 
 	database.DB.First(&l, id)
 	fmt.Println(l)
-	return &GetLocationResponse{Location: l}, nil
+	return &gen.GetLocationResponse{Location: l}, nil
 }
 
-func (s *Server) Update(ctx context.Context, request *UpdateLocationRequest) (*Response, error) {
+func (s *LocationServer) Update(ctx context.Context, request *gen.UpdateLocationRequest) (*gen.Location, error) {
 	log.Printf("Received reequst to Update a Location: ")
 
-	var l *Location
+	var l *gen.Location
 	id := request.GetId()
 
 	database.DB.First(&l, id)
@@ -66,10 +67,10 @@ func (s *Server) Update(ctx context.Context, request *UpdateLocationRequest) (*R
 
 	database.DB.Save(&l)
 
-	return &Response{Message: "Upddated Locations!"}, nil
+	return &gen.Location{}, nil
 }
 
-func (s *Server) Delete(ctx context.Context, request *DeleteLocationRequest) (*Response, error) {
+func (s *LocationServer) Delete(ctx context.Context, request *gen.DeleteLocationRequest) (*gen.Location, error) {
 	log.Printf("Received reequst to Delete a Location: ")
 
 	var l models.Location
@@ -83,5 +84,5 @@ func (s *Server) Delete(ctx context.Context, request *DeleteLocationRequest) (*R
 	}
 
 	database.DB.Delete(&l, id)
-	return &Response{Message: "Location deleted"}, nil
+	return &gen.Location{}, nil
 }

@@ -2,13 +2,12 @@ package main
 
 import (
 	"context"
-	"grpc-tennis/auth"
 	"grpc-tennis/config"
 	"grpc-tennis/database"
-	"grpc-tennis/location"
+	"grpc-tennis/gen"
 	"grpc-tennis/models"
 	"grpc-tennis/seeder"
-	"grpc-tennis/user"
+	"grpc-tennis/services"
 	"log"
 	"net"
 	"net/http"
@@ -26,15 +25,15 @@ func run() error {
 	ctx := context.Background()
 	endpoint := "localhost:9000"
 	opts := []grpc.DialOption{grpc.WithTransportCredentials(insecure.NewCredentials())}
-	if err := location.RegisterLocationServiceHandlerFromEndpoint(ctx, mux, endpoint, opts); err != nil {
+	if err := gen.RegisterLocationServiceHandlerFromEndpoint(ctx, mux, endpoint, opts); err != nil {
 		log.Fatalf("Failed to register gateway: %v", err)
 	}
 
-	if err := user.RegisterUserServiceHandlerFromEndpoint(ctx, mux, endpoint, opts); err != nil {
+	if err := gen.RegisterUserServiceHandlerFromEndpoint(ctx, mux, endpoint, opts); err != nil {
 		log.Fatalf("Failed to register gateway: %v", err)
 	}
 
-	if err := auth.RegisterAuthServiceHandlerFromEndpoint(ctx, mux, endpoint, opts); err != nil {
+	if err := gen.RegisterAuthServiceHandlerFromEndpoint(ctx, mux, endpoint, opts); err != nil {
 		log.Fatalf("Failed to register gateway: %v", err)
 	}
 
@@ -56,15 +55,15 @@ func main() {
 		log.Fatal("Failed to listen to port 9000 ", err)
 	}
 
-	s := location.Server{}
-	s2 := user.Server{}
-	s3 := auth.Server{}
+	s := services.LocationServer{}
+	s2 := services.UserServer{}
+	s3 := services.AuthServer{}
 
 	grpcServer := grpc.NewServer()
 
-	location.RegisterLocationServiceServer(grpcServer, &s)
-	user.RegisterUserServiceServer(grpcServer, &s2)
-	auth.RegisterAuthServiceServer(grpcServer, &s3)
+	gen.RegisterLocationServiceServer(grpcServer, &s)
+	gen.RegisterUserServiceServer(grpcServer, &s2)
+	gen.RegisterAuthServiceServer(grpcServer, &s3)
 
 	go func() {
 		if err := grpcServer.Serve(lis); err != nil {

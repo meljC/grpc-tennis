@@ -1,8 +1,8 @@
-package auth
+package services
 
 import (
 	"context"
-	"grpc-tennis/user"
+	"grpc-tennis/gen"
 	"time"
 
 	"github.com/golang-jwt/jwt"
@@ -11,12 +11,12 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-type Server struct {
-	UnimplementedAuthServiceServer
+type AuthServer struct {
+	gen.UnimplementedAuthServiceServer
 }
 
-func (s *Server) Login(ctx context.Context, req *LoginRequest) (*LoginResponse, error) {
-	user := user.GetUserByEmail(req.Email)
+func (s *AuthServer) Login(ctx context.Context, req *gen.LoginRequest) (*gen.LoginResponse, error) {
+	user := GetUserByEmail(req.Email)
 
 	if user == nil {
 		return nil, status.Errorf(codes.Unauthenticated, "invalid email or password")
@@ -41,10 +41,10 @@ func (s *Server) Login(ctx context.Context, req *LoginRequest) (*LoginResponse, 
 		return nil, status.Errorf(codes.Internal, "failed to generate JWT token")
 	}
 
-	return &LoginResponse{Token: tokenString}, nil
+	return &gen.LoginResponse{Token: tokenString}, nil
 }
 
-func (s *Server) CheckPasswordHash(password, hash string) bool {
+func (s *AuthServer) CheckPasswordHash(password, hash string) bool {
 	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
 	return err == nil
 }
