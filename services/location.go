@@ -7,6 +7,8 @@ import (
 	"grpc-tennis/gen"
 	"grpc-tennis/models"
 	"log"
+
+	"github.com/PeteProgrammer/go-automapper"
 )
 
 type LocationServer struct {
@@ -19,13 +21,16 @@ func (s *LocationServer) Create(ctx context.Context, request *gen.CreateLocation
 	log.Printf("Received reequst to add a Location: %d %s", request.GetCityId(), request.GetAddress())
 
 	var l models.Location
-	l.CityID = uint(request.GetCityId())
-	l.Latitude = request.GetLatitude()
-	l.Longitude = request.GetLongitude()
-	l.Address = request.GetAddress()
+	automapper.MapLoose(request, &l)
+	fmt.Printf("City ID, address: %d %s \n", l.CityId, l.Address)
+
 	database.DB.Create(&l)
 
-	return &gen.Location{}, nil
+	var response = &gen.Location{}
+	automapper.MapLoose(&l, response)
+	fmt.Printf("Location: %d %s \n", response.CityId, response.Address)
+
+	return response, nil
 }
 
 func (s *LocationServer) GetLocations(ctx context.Context, request *gen.GetLocationsRequest) (*gen.GetLocationsResponse, error) {
@@ -79,7 +84,7 @@ func (s *LocationServer) Delete(ctx context.Context, request *gen.DeleteLocation
 	database.DB.First(&l, id)
 	fmt.Println(l)
 
-	if l.ID == 0 {
+	if l.Id == 0 {
 		fmt.Println("Location not found")
 	}
 

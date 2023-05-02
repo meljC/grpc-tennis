@@ -3,6 +3,7 @@ module grpc-tennis
 go 1.19
 
 require (
+	github.com/PeteProgrammer/go-automapper v0.0.0-20200419053654-7c63d5bb0eb4
 	github.com/brianvoe/gofakeit/v6 v6.20.2
 	github.com/golang-jwt/jwt v3.2.2+incompatible
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.15.2

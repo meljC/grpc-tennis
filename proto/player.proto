@@ -1,0 +1,85 @@
+syntax = "proto3";
+
+package player;
+option  go_package = "grpc-tennis/gen";
+
+import "google/api/annotations.proto";
+//import "proto";
+
+message Player{
+    uint32 id = 1;
+    string first_name = 2;
+	string last_name = 3;
+	float birth_date = 4;
+	uint32 city_id = 5;
+}
+
+message CreatePlayerRequest{
+    string first_name = 2;
+	string last_name = 3;
+	float birth_date = 4;
+	uint32 city_id = 5;
+}
+
+message GetPlayersRequest{
+    // Get all Players
+}
+
+message GetPlayerRequest{
+    uint32 id = 1;
+}
+
+message UpdatePlayerRequest{
+    uint32 id = 1;
+    string first_name = 2;
+	string last_name = 3;
+	float birth_date = 4;
+	uint32 city_id = 5;
+}
+
+message DeletePlayerRequest{
+    uint32 id = 1;
+}
+
+message GetPlayersResponse{
+    repeated Player players = 1;
+}
+
+message GetPlayerResponse{
+    Player player = 1;
+}
+
+
+service PlayerService{
+    rpc Create(CreatePlayerRequest) returns (Player) {
+        option (google.api.http) = {
+            post : "/api/players"
+            body : "*"
+        };
+    }
+
+    rpc GetPlayers(GetPlayersRequest) returns (GetPlayersResponse) {
+        option (google.api.http) = {
+            get : "/api/players"
+        };
+    }
+
+    rpc Get (GetPlayerRequest) returns (GetPlayerResponse) {
+        option (google.api.http) = {
+            get: "/api/players/{id}"
+        };
+    }
+
+    rpc Update (UpdatePlayerRequest) returns (Player) {
+        option (google.api.http) = {
+            put: "/api/players/{id}"
+            body : "*"
+        };
+    } 
+
+    rpc Delete (DeletePlayerRequest) returns (Player) {
+        option (google.api.http) = {
+            delete: "/api/players/{id}"
+        };
+    }
+}

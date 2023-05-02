@@ -15,7 +15,7 @@ message Location{
 }
 
 message CreateLocationRequest{
-	uint32 city_id = 1;
+    uint32 city_id = 1;
 	float latitude = 2;
 	float longitude = 3;
 	string  address = 4;
@@ -54,6 +54,7 @@ service LocationService{
     rpc Create(CreateLocationRequest) returns (Location) {
         option (google.api.http) = {
             post : "/api/locations"
+            body : "*"
         };
     }
 
@@ -72,6 +73,7 @@ service LocationService{
     rpc Update (UpdateLocationRequest) returns (Location) {
         option (google.api.http) = {
             put: "/api/locations/{id}"
+            body : "*"
         };
     } 
 

@@ -80,6 +80,7 @@ service UserService{
     rpc Update (UpdateUserRequest) returns (Response) {
         option (google.api.http) = {
             put : "/api/users/{id}"
+            body : "*"
         };
     }
     

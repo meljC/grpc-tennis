@@ -43,7 +43,7 @@ func Seed(db *gorm.DB) {
 			cities[i].ID = 0
 			users[i].ID = 0
 			players[i].ID = 0
-			locations[i].ID = 0
+			locations[i].Id = 0
 			matches[i].ID = 0
 			tournaments[i].ID = 0
 			results[i].ID = 0
